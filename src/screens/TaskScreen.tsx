@@ -76,6 +76,7 @@ export const TaskScreen = () => {
             />
           )}
           keyExtractor={(_, index) => String(index)}
+          showsVerticalScrollIndicator={false}
         />
       </View>
       <ModalComponent
@@ -93,6 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 5,
     marginHorizontal: 10,
+    marginBottom: 75,
   },
   searchInput: {
     position: 'absolute',

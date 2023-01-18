@@ -20,8 +20,8 @@ export const TaskCard = ({index, task, setModal, addSelectedTask}: Props) => {
   };
   return (
     <TouchableOpacity
-      activeOpacity={0.3}
       style={styles.cardContainer}
+      activeOpacity={0.7}
       onPress={() =>
         navigation.dispatch(
           CommonActions.navigate('DetailTaskScreen', {

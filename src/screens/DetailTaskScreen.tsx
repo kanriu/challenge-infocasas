@@ -1,5 +1,16 @@
 import React, {useRef, useState, useContext, useEffect} from 'react';
-import {StyleSheet, Text, TextInput, View, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../navigation/Navigation';
 import {AddTask} from '../components/AddTask';
@@ -53,37 +64,46 @@ export const DetailTaskScreen = ({route}: Props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.titulo}>Titulo:</Text>
-      <TextInput
-        style={styles.textInput}
-        placeholder={'Insertar titulo...'}
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={task.title}
-        onChangeText={value => {
-          setTask({...task, title: value});
-          textRef.current = value;
-        }}
-      />
-      <Text style={styles.titulo}>Subtareas:</Text>
-      <AddTask onHandle={emptyTask} />
-      <FlatList
-        data={task.subTasks}
-        renderItem={({item, index}) => (
-          <AddSubTask
-            subTask={item}
-            task={task}
-            onChange={setTask}
-            isFocus={isFocusRef.current}
-            removeSubTask={updateTask}
-            textRef={textRef}
-            checkCompleted={checkCompleted}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}
+      keyboardVerticalOffset={60}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <Text style={styles.titulo}>Titulo:</Text>
+          <TextInput
+            style={styles.textInput}
+            placeholder={'Insertar titulo...'}
+            autoCapitalize="none"
+            autoCorrect={false}
+            value={task.title}
+            onChangeText={value => {
+              setTask({...task, title: value});
+              textRef.current = value;
+            }}
           />
-        )}
-        keyExtractor={(_, index) => String(index)}
-      />
-    </View>
+          <Text style={styles.titulo}>Subtareas:</Text>
+          <AddTask onHandle={emptyTask} />
+          <FlatList
+            data={task.subTasks}
+            renderItem={({item, index}) => (
+              <AddSubTask
+                subTask={item}
+                task={task}
+                onChange={setTask}
+                isFocus={isFocusRef.current}
+                removeSubTask={updateTask}
+                textRef={textRef}
+                checkCompleted={checkCompleted}
+              />
+            )}
+            keyExtractor={(_, index) => String(index)}
+            showsVerticalScrollIndicator={false}
+            removeClippedSubviews={false}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
